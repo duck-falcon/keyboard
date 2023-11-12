@@ -908,10 +908,14 @@ case NI_HO:
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+  //                                                                                                                           @
       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_AT,
+  //                                                                                                                    ;       :                        
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_ESC,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, LSFT(KC_SCLN),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+  //                                                                                                ,           .       /         ctrl, 2tap -> ctrl+shift 
+  //  レイヤー3をトグル
       TG(3),    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                          KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  TD(TD_LCTL),
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           TD(TD_LCMD),   TD(TD_NUMBER_SHIFT),  LT(1,KC_SPC),     LT(1,KC_ENT),  TD(TD_NICOLA_SHIFT), TD(TD_RCMD)
@@ -921,13 +925,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // code 系
     [1] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+  //                   
        KC_DLR,   KC_BSLS,    KC_PERC,    KC_NUHS,    KC_EXLM,    KC_AMPR,        KC_QUOT,    LSFT(KC_QUOT),    KC_UP,    RGUI(KC_UP),    XXXXXXX, KC_AT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
        KC_MINS, KC_EQL, KC_LPRN, KC_LBRC, KC_LCBR, KC_PLUS,                      KC_BSPC, KC_LEFT,   KC_DOWN,KC_RIGHT, XXXXXXX, KC_ASTR,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
        KC_UNDS, XXXXXXX, KC_RPRN, KC_RBRC, KC_RCBR, KC_PIPE,                      KC_SPC, RSFT(KC_SPC), RGUI(KC_DOWN), XXXXXXX , XXXXXXX, KC_SLSH,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          XXXXXXX, XXXXXXX,  LGUI(KC_SPC),     RGUI(KC_SPC),   XXXXXXX, XXXXXXX
+                                          XXXXXXX, LGUI(KC_SPC),  XXXXXXX,  XXXXXXX   ,   RGUI(KC_SPC), XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ),
 // number とか F12 とか
@@ -937,20 +942,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, XXXXXXX, KC_F6, KC_F5, KC_F4, KC_F11,                      XXXXXXX,  KC_4, KC_5, KC_6, XXXXXXX,  XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      TG(2), XXXXXXX, KC_F3, KC_F2, KC_F1, KC_F12,                      XXXXXXX, KC_1, KC_2, KC_3, XXXXXXX, XXXXXXX,
+  //  レイヤ3のみアクティブにする
+      TO(3), XXXXXXX, KC_F3, KC_F2, KC_F1, KC_F12,                      XXXXXXX, KC_1, KC_2, KC_3, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+  //                    command, 2tap->command+shift  デフォルトレイヤに戻す         親指シフトレイヤにいく
                                           TD(TD_LCMD),  TG(2) ,  KC_SPC,     KC_ENT, TG(4), KC_0
                                       //`--------------------------'  `--------------------------'
   ),
 // mouse 操作
     [3] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        XXXXXXX, XXXXXXX, XXXXXXX, KC_WH_D, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, KC_MS_U, XXXXXXX, XXXXXXX, TG(3),
+  // スクロール                         上                                            マウスポインタ        上
+        XXXXXXX, XXXXXXX, XXXXXXX, KC_WH_D, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, KC_MS_U, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, KC_WH_R, KC_WH_U, KC_WH_L, LCTL(KC_LEFT),                      RCTL(KC_RIGHT), KC_MS_L, KC_MS_D, KC_MS_R, XXXXXXX, XXXXXXX,
+  //                                                  ウィンドウ切り替え左                ウィンドウ切り替え右　                     
+      XXXXXXX, XXXXXXX, KC_WH_R, KC_WH_U, KC_WH_L, RCTL(KC_LEFT),                      RCTL(KC_RIGHT), KC_MS_L, KC_MS_D, KC_MS_R, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      TG(3), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_WH_U, KC_WH_D, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //                                                                            一番下           一番上
+      TG(3), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      LGUI(KC_WH_U), LGUI(KC_WH_D), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+  //                                                           右クリック　　　　左クリック
                                           XXXXXXX, XXXXXXX,  KC_BTN2,     KC_BTN1, XXXXXXX, XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ),
@@ -961,10 +972,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, NI_U,    NI_SHI,  NI_TE,   NI_KE,   NI_SE,                        NI_HA,   NI_TO,    NI_KI,    NI_I,  NI_NN,  XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, NI_CDOT,  NI_HI,    NI_SU,   NI_HU,  NI_HE,                        NI_ME,   NI_SO, NI_NE,  NI_HO, NI_LI, XXXXXXX,
+  // レイヤ3のみアクティブにする
+      TO(3), NI_CDOT,  NI_HI,    NI_SU,   NI_HU,  NI_HE,                        NI_ME,   NI_SO, NI_NE,  NI_HO, NI_LI, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           XXXXXXX, NI_SHIFT_L,  KC_SPC,     KC_ENT, NI_SHIFT_R, XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ),
 };
+
+
+
 
