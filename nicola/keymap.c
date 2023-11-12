@@ -341,12 +341,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_invert(2);
       }
       return false;  // これ以上の処理は不要なので false を返す
+    case TG(4): // 数字からnicolaに飛ぶ
+      if (record->event.pressed) {
+        // デフォルトレイヤーに戻る時は "かな" にする
+        tap_code(KC_LANGUAGE_1);
+        // レイヤーをトグルする
+        layer_invert(2);
+        layer_invert(4);
+      }
+      return false;  // これ以上の処理は不要なので false を返す
     case NI_SHIFT_R: // nicola からデフォルトに戻る
       if (record->event.pressed) {
         // デフォルトレイヤーに戻る時は "英数" にする
         tap_code(KC_LANGUAGE_2);
         // レイヤーをトグルする
         layer_invert(4);
+      }
+      return false;
+    case NI_SHIFT_L: // nicola から数字に飛ぶ
+      if (record->event.pressed) {
+        // 数字レイヤーに戻る時は "英数" にする
+        tap_code(KC_LANGUAGE_2);
+        // レイヤーをトグルする
+        layer_invert(4);
+        layer_invert(2);
       }
       return false;
     // 左
@@ -921,7 +939,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       TG(2), XXXXXXX, KC_F3, KC_F2, KC_F1, KC_F12,                      XXXXXXX, KC_1, KC_2, KC_3, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          TD(TD_LCMD),  TG(2) ,  KC_SPC,     KC_ENT, KC_LSFT, KC_0
+                                          TD(TD_LCMD),  TG(2) ,  KC_SPC,     KC_ENT, TG(4), KC_0
                                       //`--------------------------'  `--------------------------'
   ),
 // mouse 操作
@@ -949,3 +967,4 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
   ),
 };
+
