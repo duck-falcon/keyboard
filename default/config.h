@@ -32,6 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 長押し判定までの時間(msec),ダブルタップ判定も
 #define TAPPING_TERM 300
 #define TAPPING_TERM_PER_KEY
+#define DYNAMIC_KEYMAP_LAYER_COUNT 5
 
 #ifdef RGBLIGHT_ENABLE
     #define RGBLIGHT_EFFECT_BREATHING
