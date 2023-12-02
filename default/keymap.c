@@ -50,8 +50,9 @@ tap_dance_action_t tap_dance_actions[] = {
     親指シフト用, tap で layer change, 長押しで shift
     数字用,      tap で layer change, 長押して shift
 -----------------------------------------------------*/ 
-#define NICOLA_LAYER 4
+#define NICOLA_LAYER 1
 #define NUMBER_LAYER 2
+#define PROGRAM_LAYER 3
 
 void td_nicola_shift_finished(tap_dance_state_t *state, void *user_data) {
   if (state->pressed) {
@@ -333,21 +334,21 @@ key が 押された時に毎回走る処理
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case TG(2): // 数字からデフォルトに戻る
+    case TG(NUMBER_LAYER): // 数字からデフォルトに戻る
       if (record->event.pressed) {
         // デフォルトレイヤーに戻る時は "英数" にする
         tap_code(KC_LANGUAGE_2);
         // レイヤーをトグルする
-        layer_invert(2);
+        layer_invert(NUMBER_LAYER);
       }
       return false;  // これ以上の処理は不要なので false を返す
-    case TG(4): // 数字からnicolaに飛ぶ
+    case TG(NICOLA_LAYER): // 数字からnicolaに飛ぶ
       if (record->event.pressed) {
         // デフォルトレイヤーに戻る時は "かな" にする
         tap_code(KC_LANGUAGE_1);
         // レイヤーをトグルする
-        layer_invert(2);
-        layer_invert(4);
+        layer_invert(NUMBER_LAYER);
+        layer_invert(NICOLA_LAYER);
       }
       return false;  // これ以上の処理は不要なので false を返す
     case NI_SHIFT_R: // nicola からデフォルトに戻る
@@ -355,7 +356,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // デフォルトレイヤーに戻る時は "英数" にする
         tap_code(KC_LANGUAGE_2);
         // レイヤーをトグルする
-        layer_invert(4);
+        layer_invert(NICOLA_LAYER);
       }
       return false;
     case NI_SHIFT_L: // nicola から数字に飛ぶ
@@ -363,8 +364,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // 数字レイヤーに戻る時は "英数" にする
         tap_code(KC_LANGUAGE_2);
         // レイヤーをトグルする
-        layer_invert(4);
-        layer_invert(2);
+        layer_invert(NICOLA_LAYER);
+        layer_invert(NUMBER_LAYER);
       }
       return false;
     // 左
@@ -905,15 +906,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_ESC,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, LSFT(KC_SCLN),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-  //                                                                                                ,           .       /         ctrl, 2tap -> ctrl+shift 
-      XXXXXXX,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                          KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  TD(TD_LCTL),
+  //       ctrl, 2tap -> ctrl+shift                                                                                          ,           .       /            option
+      TD(TD_LCTL),    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                          KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_LOPT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          TD(TD_LCMD),   TD(TD_NUMBER_SHIFT),  LT(1,KC_SPC),     LT(1,KC_ENT),  TD(TD_NICOLA_SHIFT), TD(TD_RCMD)
+                                          TD(TD_LCMD),   TD(TD_NUMBER_SHIFT),  LT(PROGRAM_LAYER,KC_SPC),     LT(PROGRAM_LAYER,KC_ENT),  TD(TD_NICOLA_SHIFT), TD(TD_RCMD)
                                       //`--------------------------'  `--------------------------'
 
   ),
 // code 系
-    [1] = LAYOUT_split_3x6_3(
+    [3] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
   //                   
        KC_DLR,   KC_BSLS,    KC_PERC,    KC_NUHS,    KC_EXLM,    KC_AMPR,        KC_QUOT,    LSFT(KC_QUOT),    KC_UP,    RGUI(KC_UP),    XXXXXXX, KC_AT,
@@ -935,11 +936,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       XXXXXXX, XXXXXXX, KC_F3, KC_F2, KC_F1, KC_F12,                      XXXXXXX, KC_1, KC_2, KC_3, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
   //                    command, 2tap->command+shift  デフォルトレイヤに戻す         親指シフトレイヤにいく
-                                          TD(TD_LCMD),  TG(2) ,  LT(1,KC_SPC),     LT(1,KC_ENT), TG(4), KC_0
+                                          TD(TD_LCMD),  TG(NUMBER_LAYER) ,  LT(PROGRAM_LAYER,KC_SPC),     LT(PROGRAM_LAYER,KC_ENT), TG(NICOLA_LAYER), KC_0
                                       //`--------------------------'  `--------------------------'
   ),
   // 親指シフト nicola 配列
-      [4] = LAYOUT_split_3x6_3(
+      [1] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
         XXXXXXX, NI_MARU, NI_KA, NI_TA, NI_KO, NI_SA,                            NI_RA,   NI_TI,    NI_KU,    NI_TU,   NI_CMMA, NI_TEN,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -947,7 +948,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, NI_CDOT,  NI_HI,    NI_SU,   NI_HU,  NI_HE,                        NI_ME,   NI_SO, NI_NE,  NI_HO, NI_LI, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          XXXXXXX, NI_SHIFT_L,  LT(1,KC_SPC),     LT(1,KC_ENT), NI_SHIFT_R, XXXXXXX
+                                          XXXXXXX, NI_SHIFT_L,  LT(PROGRAM_LAYER,KC_SPC),     LT(PROGRAM_LAYER,KC_ENT), NI_SHIFT_R, XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ),
 };
