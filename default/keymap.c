@@ -53,6 +53,8 @@ tap_dance_action_t tap_dance_actions[] = {
 #define NICOLA_LAYER 1
 #define NUMBER_LAYER 2
 #define PROGRAM_LAYER 3
+// LEFT の USB port が壊れたので、代用
+#define MASTER_RIGHT
 
 void td_nicola_shift_finished(tap_dance_state_t *state, void *user_data) {
   if (state->pressed) {
